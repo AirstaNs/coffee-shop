@@ -4,7 +4,7 @@ package com.coffeeshop.service;
 import com.coffeeshop.model.order.Order;
 import com.coffeeshop.model.event.OrderEvent;
 
-interface OrderService {
+public interface OrderService {
 
     void publishEvent(OrderEvent event);
 

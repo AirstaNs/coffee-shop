@@ -1,6 +1,6 @@
-package com.coffeeshop.model.order;
+package com.coffeeshop.model.event;
 
-public enum OrderStatus {
+public enum EventType {
     REGISTERED,
     CANCELLED,
     IN_PROGRESS,
