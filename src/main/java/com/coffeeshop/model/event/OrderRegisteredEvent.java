@@ -1,6 +1,7 @@
 package com.coffeeshop.model.event;
 
 import com.coffeeshop.model.order.Order;
+import jakarta.persistence.DiscriminatorValue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -8,6 +9,7 @@ import java.time.LocalTime;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@DiscriminatorValue("REGISTERED")
 class OrderRegisteredEvent extends OrderEvent {
     private Long clientId;
     private LocalTime expectedPickupTime;
