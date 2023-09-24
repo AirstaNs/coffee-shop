@@ -10,11 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "order")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JoinColumn(name = "order_id")
     private Integer id;
 
     @Enumerated(EnumType.STRING)
@@ -26,5 +29,8 @@ public class Order {
         for (OrderEvent event : events) {
             event.applyTo(this);
         }
+    @JsonCreator
+    public Order(@JsonProperty("order_id") Integer id) {
+        this.id = id;
     }
 }

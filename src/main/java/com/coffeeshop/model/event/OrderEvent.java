@@ -1,10 +1,7 @@
 package com.coffeeshop.model.event;
 
 import com.coffeeshop.model.order.Order;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -31,6 +28,7 @@ public abstract class OrderEvent {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
+    @JsonUnwrapped
     private Order order;
 
     protected Long employeeId;

@@ -36,9 +36,8 @@ public class OrderCancelledEvent extends OrderEvent {
     @Override
     public void serializeEventData() {
         ObjectMapper mapper = new ObjectMapper();
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern("HH:mm")));
-        mapper.registerModule(module);
+        mapper.registerModule(new JavaTimeModule());
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         try {
             Map<String, Object> eventDataMap = new HashMap<>();
             eventDataMap.put("cancelReason", this.cancelReason);
@@ -54,7 +53,7 @@ public class OrderCancelledEvent extends OrderEvent {
         mapper.registerModule(new JavaTimeModule());
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         try {
-            Map<String, Object> eventDataMap = mapper.readValue(this.getEventData(), new TypeReference<Map<String, Object>>() {});
+            Map<String, Object> eventDataMap = mapper.readValue(this.getEventData(), new TypeReference<>() {});
             this.cancelReason = (String) eventDataMap.get("cancelReason");
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Ошибка десериализации данных события", e);

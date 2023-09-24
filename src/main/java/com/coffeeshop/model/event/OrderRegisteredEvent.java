@@ -65,7 +65,7 @@ public class OrderRegisteredEvent extends OrderEvent {
         mapper.registerModule(new JavaTimeModule());
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         try {
-            Map<String, Object> eventDataMap = mapper.readValue(this.getEventData(), new TypeReference<Map<String, Object>>() {});
+            Map<String, Object> eventDataMap = mapper.readValue(this.getEventData(), new TypeReference<>() {});
             this.clientId = (Long) eventDataMap.get("clientId");
             this.expectedPickupTime = LocalTime.parse((String) eventDataMap.get("expectedPickupTime"));
             this.productId = (Long) eventDataMap.get("productId");
