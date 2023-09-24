@@ -1,6 +1,7 @@
 package com.coffeeshop.model.event;
 
 import com.coffeeshop.model.order.Order;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "event")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "event_type", discriminatorType = DiscriminatorType.STRING)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true, property = "event_type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = OrderRegisteredEvent.class, name = "REGISTERED"),
@@ -37,14 +39,22 @@ public abstract class OrderEvent {
     private LocalDateTime creationDate = LocalDateTime.now();
 
 
-    @Column(name = "event_type")
+    @Column(name = "event_type", insertable = false, updatable = false)
     @JsonProperty("event_type")
     @Enumerated(EnumType.STRING)
     private  EventType eventType;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "data")
+    @JsonIgnore
     private String eventData;
 
     public abstract void applyTo(Order order);
+    @PrePersist
+    @PreUpdate
+    public abstract void serializeEventData();
+
+    @PostLoad
+    public abstract void deserializeEventData();
+
 }
