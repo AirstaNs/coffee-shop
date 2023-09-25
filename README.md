@@ -89,17 +89,6 @@ interface OrderService {
 - `PROD_DB_USERNAME`: Имя пользователя базы данных.
 - `PROD_DB_PASSWORD`: Пароль пользователя базы данных.
 ### Пример
-```bash
-export PROD_DB_HOST=localhost
-export PROD_DB_PORT=5432
-export PROD_DB_NAME=mydatabase
-export PROD_DB_USERNAME=myuser
-export PROD_DB_PASSWORD=mypassword
-```
-### Можно также задать переменные при сборке проекта
-```bash
-mvnw.cmd clean install -DPROD_DB_HOST=your_host -DPROD_DB_PORT=your_port -DPROD_DB_NAME=your_db_name -DPROD_DB_USERNAME=your_username -DPROD_DB_PASSWORD=your_password
-```
 Для сборки проекта выполните следующие шаги:
 1. Откройте терминал.
 2. Перейдите в корень директории проекта.
@@ -107,16 +96,36 @@ mvnw.cmd clean install -DPROD_DB_HOST=your_host -DPROD_DB_PORT=your_port -DPROD_
 ```bash
 ./mvnw clean install
 ```
-Для Windows
-```bash
-mvnw.cmd clean install
-```
+
 <a name="запуск-проекта"></a>
 ### Запуск проекта
+
+### Нужно задать переменные среды при старте сервиса
+```bash
+export PROD_DB_HOST=localhost
+export PROD_DB_PORT=5432
+export PROD_DB_NAME=postgres
+export PROD_DB_USERNAME=postgres
+export PROD_DB_PASSWORD=postgres
+```
 ```bash
 ./mvnw spring-boot:run
 ```
-
+### Или запустить с переменными:
+```bash
+./mvnw spring-boot:run \
+-Ddb.host=${PROD_DB_HOST} \
+-Ddb.port=${PROD_DB_PORT} \
+-Ddb.name=${PROD_DB_NAME} \
+-Ddb.username=${PROD_DB_USERNAME} \
+-Ddb.password=${PROD_DB_PASSWORD}
+```
+### Можно указать файл конфигурации вместо переменных
+```bash
+./mvnw spring-boot:run \
+-D"spring-boot.run.profiles"={profile_name} \
+-D"spring.config.location"=file:/path/config/
+```
 <a name="настройки-по-умолчанию"></a>
 ### Настройки по умолчанию
 1. Порт по умолчанию 8080
