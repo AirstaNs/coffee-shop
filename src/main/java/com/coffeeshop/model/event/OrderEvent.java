@@ -18,7 +18,10 @@ import java.time.LocalDateTime;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true, property = "event_type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = OrderRegisteredEvent.class, name = "REGISTERED"),
-        @JsonSubTypes.Type(value = OrderCancelledEvent.class, name = "CANCELLED")
+        @JsonSubTypes.Type(value = OrderCancelledEvent.class, name = "CANCELLED"),
+        @JsonSubTypes.Type(value = OrderStartedEvent.class, name = "STARTED"),
+        @JsonSubTypes.Type(value = OrderCompletedEvent.class, name = "COMPLETED"),
+        @JsonSubTypes.Type(value = OrderDeliveredEvent.class, name = "DELIVERED")
 })
 public abstract class OrderEvent {
     @Id
@@ -40,7 +43,7 @@ public abstract class OrderEvent {
     @Column(name = "event_type", insertable = false, updatable = false)
     @JsonProperty("event_type")
     @Enumerated(EnumType.STRING)
-    private  EventType eventType;
+    private EventType eventType;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "data")
@@ -48,6 +51,7 @@ public abstract class OrderEvent {
     private String eventData;
 
     public abstract void applyTo(Order order);
+
     @PrePersist
     @PreUpdate
     public abstract void serializeEventData();
