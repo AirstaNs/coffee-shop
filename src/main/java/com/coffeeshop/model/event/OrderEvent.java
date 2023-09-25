@@ -24,10 +24,12 @@ import java.time.temporal.ChronoUnit;
         @JsonSubTypes.Type(value = OrderCompletedEvent.class, name =EventType.Constants.COMPLETED),
         @JsonSubTypes.Type(value = OrderDeliveredEvent.class, name = EventType.Constants.DELIVERED)
 })
+@JsonPropertyOrder({"event_id", "event_type", "creation_date", "order_id", "employeeId"})
 public abstract class OrderEvent implements OrderEventApplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id")
+    @JsonProperty("event_id")
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,12 +40,12 @@ public abstract class OrderEvent implements OrderEventApplier {
 
     protected Long employeeId;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "creation_date")
     private LocalDateTime creationDate = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 
-
-    @Column(name = "event_type", insertable = false, updatable = false)
     @JsonProperty("event_type")
+    @Column(name = "event_type", insertable = false, updatable = false)
     @Enumerated(EnumType.STRING)
     private EventType eventType;
 
