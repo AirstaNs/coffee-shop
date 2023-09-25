@@ -3,8 +3,12 @@ package com.coffeeshop.model.order;
 
 import com.coffeeshop.model.event.EventType;
 import com.coffeeshop.model.event.OrderEvent;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +27,9 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private EventType status;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderEvent> events = new ArrayList<>();
-    public void applyEvents() {
-        for (OrderEvent event : events) {
-            event.applyTo(this);
-        }
+
     @JsonCreator
     public Order(@JsonProperty("order_id") Integer id) {
         this.id = id;
