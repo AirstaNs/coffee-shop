@@ -11,6 +11,12 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 
+/**
+ * Базовый класс {@code OrderEvent} представляет события, связанные с заказами.
+ * События хранятся в базе данных в виде цепочки (подход event sourcing).
+ * Поля подтипов хранятся в json формате  {@link  #eventData}.
+ * Jackson десереализует в подтип.
+ */
 @Data
 @Entity
 @Table(name = "event")
@@ -49,12 +55,25 @@ public abstract class OrderEvent implements OrderEventApplier {
     @Enumerated(EnumType.STRING)
     private EventType eventType;
 
+
+    /**
+     * Поле для из котного и в который маппится поле data в БД типа json/
+     */
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "data")
     @JsonIgnore
     private String eventData;
 
 
+    /**
+     * Проверяет, можно ли применить данное событие к указанному заказу.
+     * Условия:
+     * - Любому из событий должно предшествовать событие регистрации заказа.
+     * - Если заказ уже выдан или отменен, публикация новых событий недоступна.
+     *
+     * @param order Заказ, к которому пытаемся применить событие.
+     * @return {@code true}, если событие применимо, иначе {@code false}.
+     */
     public boolean isApplicable(Order order) {
         if (order == null) return false;
 

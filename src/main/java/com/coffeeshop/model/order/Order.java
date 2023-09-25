@@ -15,6 +15,17 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Класс {@code Order} представляет собой агрегат заказа в системе.
+ * <p>
+ * Заказ в системе представлен в виде цепочки событий, что соответствует подходу event sourcing.
+ * Основное преимущество такого подхода - гибкость в плане дальнейшего разбиения заказа на этапы, что может быть необходимо, например, для анализа трудозатрат и выявления проблем в скорости обслуживания клиентов.
+ * </p>
+ * <p>
+ * Важной особенностью класса является то, что он хранит только текущий статус заказа. Полный список событий, связанных с заказом, заполняется только при выборке из базы данных.
+ * </p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,10 +39,17 @@ public class Order {
     @JsonProperty("order_id")
     private Integer id;
 
+    /**
+     * Текущий статус заказа. Отражает последнее событие, связанное с заказом.
+     */
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Enumerated(EnumType.STRING)
     private EventType status;
 
+    /**
+     * Список всех событий, связанных с заказом.
+     * Заполняется только при выборке из базы данных.
+     */
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @JsonManagedReference
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

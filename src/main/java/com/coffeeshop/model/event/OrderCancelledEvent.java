@@ -12,22 +12,38 @@ import lombok.EqualsAndHashCode;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * Класс {@code OrderCancelledEvent} представляет событие отмены заказа.
+ * Содержит причину отмены заказа и методы для сериализации и десериализации данных события.
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @DiscriminatorValue(EventType.Constants.CANCELLED)
 @Entity
 public class OrderCancelledEvent extends OrderEvent {
 
+    /**
+     * этот аргумент хранится в json в поле {@link OrderEvent#getEventData()}
+     */
     @Transient
     private String cancelReason;
 
-
+    /**
+     * Применяет текущее событие к указанному заказу, устанавливая его статус как "CANCELLED".
+     *
+     * @param order Заказ, к которому применяется событие.
+     * @return Заказ с обновленным статусом.
+     */
     @Override
     public Order applyTo(Order order) {
         order.setStatus(EventType.CANCELLED);
         return order;
     }
 
+    /**
+     * Сериализует данные события перед сохранением в базу данных.
+     */
     @PrePersist
     @PreUpdate
     public void serializeEventData() {
@@ -40,7 +56,9 @@ public class OrderCancelledEvent extends OrderEvent {
             throw new RuntimeException("Ошибка сериализации данных события", e);
         }
     }
-
+    /**
+     * Десериализует данные события после загрузки из базы данных.
+     */
     @PostLoad
     public void deserializeEventData() {
         ObjectMapper mapper = FormatMapperCustom.getObjectMapper();

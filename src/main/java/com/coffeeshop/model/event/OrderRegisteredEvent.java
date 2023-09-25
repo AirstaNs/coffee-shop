@@ -15,6 +15,14 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * Класс {@code OrderRegisteredEvent} представляет событие регистрации заказа.
+ * При применении этого события к заказу, статус заказа устанавливается как "REGISTERED".
+ * Этот класс также содержит дополнительные поля, такие как {@code clientId}, {@code expectedPickupTime},
+ * {@code productId} и {@code productCost}, которые сериализуются и десериализуются при сохранении и загрузке
+ * события из базы данных.
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @DiscriminatorValue(EventType.Constants.REGISTERED)
@@ -30,17 +38,36 @@ public class OrderRegisteredEvent extends OrderEvent {
     @Transient
     private Double productCost;
 
+    /**
+     * Проверяет, можно ли применить текущее событие к указанному заказу,
+     * что в БД ещё нету заказа с таким Id.
+     * Для события регистрации это возможно, если заказ еще не имеет статуса.
+     *
+     * @param order Заказ, к которому предполагается применить событие.
+     * @return {@code true}, если событие можно применить; иначе {@code false}.
+     */
     @Override
     public boolean isApplicable(Order order) {
         return order != null && order.getStatus() == null;
     }
 
+    /**
+     * Применяет текущее событие к указанному заказу,
+     * устанавливая его статус как "REGISTERED".
+     * Инициализирует в сервисе новую запись order.
+     *
+     * @param order Заказ, к которому применяется событие.
+     * @return Заказ с обновленным статусом.
+     */
     @Override
     public Order applyTo(Order order) {
         order.setStatus(EventType.REGISTERED);
         return order;
     }
 
+    /**
+     * Сериализует дополнительные поля события в строку JSON перед сохранением в базе данных.
+     */
     @PrePersist
     @PreUpdate
     public void serializeEventData() {
@@ -57,6 +84,9 @@ public class OrderRegisteredEvent extends OrderEvent {
         }
     }
 
+    /**
+     * Десериализует строку JSON в дополнительные поля события после загрузки из базы данных.
+     */
     @PostLoad
     public void deserializeEventData() {
         ObjectMapper mapper = FormatMapperCustom.getObjectMapper();

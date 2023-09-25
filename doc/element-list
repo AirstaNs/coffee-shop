@@ -1,0 +1,10 @@
+com.coffeeshop
+com.coffeeshop.config.hibernate
+com.coffeeshop.controller
+com.coffeeshop.error
+com.coffeeshop.mapper
+com.coffeeshop.model
+com.coffeeshop.model.event
+com.coffeeshop.model.order
+com.coffeeshop.repository
+com.coffeeshop.service

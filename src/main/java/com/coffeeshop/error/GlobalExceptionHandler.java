@@ -8,10 +8,24 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+
+/**
+ * Глобальный обработчик исключений для контроллеров приложения.
+ * <p>
+ * Этот класс обрабатывает различные исключения, которые могут возникнуть во время выполнения приложения,
+ * и возвращает соответствующий ответ с информацией об ошибке.
+ * </p>
+ */
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
+    /**
+     * Обработка исключений, связанных с неприменимыми событиями.
+     *
+     * @param ex Исключение.
+     * @param request Запрос.
+     * @return Ответ с информацией об ошибке.
+     */
     @ExceptionHandler(EventNotApplicableException.class)
     public ResponseEntity<ErrorResponse> handleEventNotApplicableException(EventNotApplicableException ex,
             HttpServletRequest request) {
@@ -20,7 +34,12 @@ public class GlobalExceptionHandler {
         log.error("EventNotApplicableException: {}", errorResponse);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-
+    /**
+     * Обработка исключений, связанных с неверным форматом JSON.
+     *
+     * @param request Запрос.
+     * @return Ответ с информацией об ошибке.
+     */
     @ExceptionHandler({HttpMessageNotReadableException.class})
     public ResponseEntity<ErrorResponse> handleJsonParseException(HttpServletRequest request) {
         String msg = "Неверный формат JSON";
@@ -29,7 +48,13 @@ public class GlobalExceptionHandler {
         log.error("HttpMessageNotReadableException: {}", errorResponse);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-
+    /**
+     * Обработка исключений, связанных с сериализацией.
+     *
+     * @param ex Исключение.
+     * @param request Запрос.
+     * @return Ответ с информацией об ошибке.
+     */
     @ExceptionHandler(SerializationException.class)
     public ResponseEntity<ErrorResponse> handleSerializationException(SerializationException ex,
             HttpServletRequest request) {
@@ -38,6 +63,14 @@ public class GlobalExceptionHandler {
         log.error("SerializationException: {}", errorResponse);
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    /**
+     * Обработка исключений, связанных с ненайденным заказом.
+     *
+     * @param ex Исключение.
+     * @param request Запрос.
+     * @return Ответ с информацией об ошибке.
+     */
     @ExceptionHandler(OrderNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleOrderNotFoundException(OrderNotFoundException ex,
             HttpServletRequest request) {
