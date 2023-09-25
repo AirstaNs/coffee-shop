@@ -1,7 +1,6 @@
 package com.coffeeshop.service;
 
 
-import com.coffeeshop.model.event.EventType;
 import com.coffeeshop.model.event.OrderEvent;
 import com.coffeeshop.model.order.Order;
 import com.coffeeshop.repository.OrderEventRepository;
@@ -25,22 +24,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void publishEvent(OrderEvent event) {
-        EventType eventType = event.getEventType();
-        Objects.requireNonNull(eventType);
-        Order order = null;
+    public void publishEvent(OrderEvent event) throws IllegalStateException {
+        Objects.requireNonNull(event);
 
-        if (eventType == EventType.REGISTERED) {
-            order = new Order();
-            order.addEvent(event);
-        } else if (eventType == EventType.CANCELLED) {
-            order = findOrder(event.getOrder().getId());
+        Order order = event.getOrder();
+        if (order != null && order.getId() != null) {
+            order = orderRepository.findById(order.getId()).orElse(null);
         }
 
-        // Сохранение заказа и события в базе данных
-        order.setStatus(event.getEventType());
-        eventRepository.save(event);
-        orderRepository.save(order);
+        if (event.isApplicable(order)) {
+            order = event.applyTo(order);// Изменяем заказ при необходимости (статус)
+
+            // Сохраняем изменения в заказе (статус) если оно ещё не зарегистрировано и сохраняем событие.
+            orderRepository.save(Objects.requireNonNull(order));
+            eventRepository.save(event);
+        } else {
+            throw new IllegalStateException("Event cannot be applied: " + event.getClass().getSimpleName());
+        }
     }
 
     @Override
