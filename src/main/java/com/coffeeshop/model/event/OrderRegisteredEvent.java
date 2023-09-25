@@ -4,10 +4,11 @@ import com.coffeeshop.config.hibernate.FormatMapperCustom;
 import com.coffeeshop.model.order.Order;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -42,7 +43,8 @@ public class OrderRegisteredEvent extends OrderEvent {
         return order;
     }
 
-    @Override
+    @PrePersist
+    @PreUpdate
     public void serializeEventData() {
         ObjectMapper mapper = FormatMapperCustom.getObjectMapper();
         try {
@@ -54,20 +56,6 @@ public class OrderRegisteredEvent extends OrderEvent {
             this.setEventData(mapper.writeValueAsString(eventDataMap));
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Ошибка сериализации данных события", e);
-        }
-    }
-
-    @Override
-    public void deserializeEventData() {
-        ObjectMapper mapper = FormatMapperCustom.getObjectMapper();
-        try {
-            Map<String, Object> eventDataMap = mapper.readValue(this.getEventData(), new TypeReference<>() {});
-            this.clientId = (Long) eventDataMap.get("clientId");
-            this.expectedPickupTime = LocalTime.parse((String) eventDataMap.get("expectedPickupTime"));
-            this.productId = (Long) eventDataMap.get("productId");
-            this.productCost = (Double) eventDataMap.get("productCost");
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Ошибка десериализации данных события", e);
         }
     }
 }

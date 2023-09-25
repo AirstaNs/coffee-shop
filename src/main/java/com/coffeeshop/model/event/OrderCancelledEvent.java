@@ -3,10 +3,11 @@ package com.coffeeshop.model.event;
 import com.coffeeshop.config.hibernate.FormatMapperCustom;
 import com.coffeeshop.model.order.Order;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,7 +31,8 @@ public class OrderCancelledEvent extends OrderEvent {
         return order;
     }
 
-    @Override
+    @PrePersist
+    @PreUpdate
     public void serializeEventData() {
         ObjectMapper mapper = FormatMapperCustom.getObjectMapper();
         try {
@@ -39,17 +41,6 @@ public class OrderCancelledEvent extends OrderEvent {
             this.setEventData(mapper.writeValueAsString(eventDataMap));
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Ошибка сериализации данных события", e);
-        }
-    }
-
-    @Override
-    public void deserializeEventData() {
-        ObjectMapper mapper = FormatMapperCustom.getObjectMapper();
-        try {
-            Map<String, Object> eventDataMap = mapper.readValue(this.getEventData(), new TypeReference<>() {});
-            this.cancelReason = (String) eventDataMap.get("cancelReason");
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Ошибка десериализации данных события", e);
         }
     }
 }

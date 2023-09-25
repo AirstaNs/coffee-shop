@@ -1,13 +1,18 @@
 package com.coffeeshop.model.event;
 
 import com.coffeeshop.model.order.Order;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 
 @Data
@@ -37,7 +42,7 @@ public abstract class OrderEvent implements OrderEventApplier {
     protected Long employeeId;
 
     @Column(name = "creation_date")
-    private LocalDateTime creationDate = LocalDateTime.now();
+    private LocalDateTime creationDate = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 
 
     @Column(name = "event_type", insertable = false, updatable = false)
@@ -59,12 +64,4 @@ public abstract class OrderEvent implements OrderEventApplier {
                && status != EventType.CANCELLED
                && status != EventType.DELIVERED;
     }
-
-    @PrePersist
-    @PreUpdate
-    public abstract void serializeEventData();
-
-    @PostLoad
-    public abstract void deserializeEventData();
-
 }

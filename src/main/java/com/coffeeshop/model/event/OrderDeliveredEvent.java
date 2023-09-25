@@ -16,10 +16,4 @@ public class OrderDeliveredEvent extends OrderEvent {
         order.setStatus(EventType.DELIVERED);
         return order;
     }
-
-    @Override
-    public void serializeEventData() {}
-
-    @Override
-    public void deserializeEventData() {}
 }
