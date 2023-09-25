@@ -51,9 +51,13 @@ public abstract class OrderEvent implements OrderEventApplier {
     private String eventData;
 
 
-    @Override
     public boolean isApplicable(Order order) {
-        return order != null && order.getStatus() != null;
+        if (order == null) return false;
+
+        EventType status = order.getStatus();
+        return status != null
+               && status != EventType.CANCELLED
+               && status != EventType.DELIVERED;
     }
 
     @PrePersist

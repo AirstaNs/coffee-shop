@@ -24,10 +24,6 @@ public class OrderCancelledEvent extends OrderEvent {
     @Transient
     private String cancelReason;
 
-    @Override
-    public boolean isApplicable(Order order) {
-        return super.isApplicable(order) && order.getStatus() != EventType.CANCELLED;
-    }
 
     @Override
     public Order applyTo(Order order) {
