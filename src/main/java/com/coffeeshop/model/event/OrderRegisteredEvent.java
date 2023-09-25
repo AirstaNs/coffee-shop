@@ -1,6 +1,7 @@
 package com.coffeeshop.model.event;
 
 import com.coffeeshop.config.hibernate.FormatMapperCustom;
+import com.coffeeshop.error.SerializationException;
 import com.coffeeshop.model.order.Order;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -55,7 +56,7 @@ public class OrderRegisteredEvent extends OrderEvent {
             eventDataMap.put("productCost", this.productCost);
             this.setEventData(mapper.writeValueAsString(eventDataMap));
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Ошибка сериализации данных события", e);
+            throw new SerializationException("Ошибка сериализации данных события");
         }
     }
 }

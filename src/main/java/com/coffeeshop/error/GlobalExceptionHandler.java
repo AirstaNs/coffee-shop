@@ -22,12 +22,20 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({HttpMessageNotReadableException.class})
-    public ResponseEntity<ErrorResponse> handleJsonParseException(
-            HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse> handleJsonParseException(HttpServletRequest request) {
         String msg = "Неверный формат JSON";
         String path = request.getServletPath();
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST, path, msg);
         log.error("HttpMessageNotReadableException: {}", errorResponse);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(SerializationException.class)
+    public ResponseEntity<ErrorResponse> handleSerializationException(SerializationException ex,
+            HttpServletRequest request) {
+        String path = request.getServletPath();
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, path, ex.getMessage());
+        log.error("SerializationException: {}", errorResponse);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

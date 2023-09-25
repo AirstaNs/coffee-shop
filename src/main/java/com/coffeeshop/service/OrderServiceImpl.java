@@ -1,6 +1,7 @@
 package com.coffeeshop.service;
 
 
+import com.coffeeshop.error.EventNotApplicableException;
 import com.coffeeshop.model.event.OrderEvent;
 import com.coffeeshop.model.order.Order;
 import com.coffeeshop.repository.OrderEventRepository;
@@ -39,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
             orderRepository.save(Objects.requireNonNull(order));
             eventRepository.save(event);
         } else {
-            throw new IllegalStateException("Event cannot be applied: " + event.getClass().getSimpleName());
+            throw new EventNotApplicableException("Event cannot be applied: " + event.getEventType());
         }
     }
 
