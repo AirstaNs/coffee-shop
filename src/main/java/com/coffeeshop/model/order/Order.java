@@ -4,6 +4,7 @@ package com.coffeeshop.model.order;
 import com.coffeeshop.model.event.EventType;
 import com.coffeeshop.model.event.OrderEvent;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private EventType status;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderEvent> events = new ArrayList<>();
 
