@@ -17,11 +17,11 @@ import java.time.LocalDateTime;
 @DiscriminatorColumn(name = "event_type", discriminatorType = DiscriminatorType.STRING)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true, property = "event_type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = OrderRegisteredEvent.class, name = "REGISTERED"),
-        @JsonSubTypes.Type(value = OrderCancelledEvent.class, name = "CANCELLED"),
-        @JsonSubTypes.Type(value = OrderStartedEvent.class, name = "STARTED"),
-        @JsonSubTypes.Type(value = OrderCompletedEvent.class, name = "COMPLETED"),
-        @JsonSubTypes.Type(value = OrderDeliveredEvent.class, name = "DELIVERED")
+        @JsonSubTypes.Type(value = OrderRegisteredEvent.class, name = EventType.Constants.REGISTERED),
+        @JsonSubTypes.Type(value = OrderCancelledEvent.class, name = EventType.Constants.CANCELLED),
+        @JsonSubTypes.Type(value = OrderStartedEvent.class, name = EventType.Constants.STARTED),
+        @JsonSubTypes.Type(value = OrderCompletedEvent.class, name =EventType.Constants.COMPLETED),
+        @JsonSubTypes.Type(value = OrderDeliveredEvent.class, name = EventType.Constants.DELIVERED)
 })
 public abstract class OrderEvent implements OrderEventApplier {
     @Id

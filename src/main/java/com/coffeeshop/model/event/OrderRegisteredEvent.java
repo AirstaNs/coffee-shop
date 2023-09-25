@@ -18,7 +18,7 @@ import java.util.Map;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@DiscriminatorValue("REGISTERED")
+@DiscriminatorValue(EventType.Constants.REGISTERED)
 @Entity
 public class OrderRegisteredEvent extends OrderEvent {
     @Transient

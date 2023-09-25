@@ -16,7 +16,7 @@ import java.util.Map;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@DiscriminatorValue("CANCELLED")
+@DiscriminatorValue(EventType.Constants.CANCELLED)
 @Entity
 public class OrderCancelledEvent extends OrderEvent {
 

@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@DiscriminatorValue("DELIVERED")
+@DiscriminatorValue(EventType.Constants.DELIVERED)
 @Entity
 public class OrderDeliveredEvent extends OrderEvent {
     @Override
