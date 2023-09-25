@@ -2,6 +2,7 @@ package com.coffeeshop.service;
 
 
 import com.coffeeshop.error.EventNotApplicableException;
+import com.coffeeshop.error.OrderNotFoundException;
 import com.coffeeshop.model.event.OrderEvent;
 import com.coffeeshop.model.order.Order;
 import com.coffeeshop.repository.OrderEventRepository;
@@ -35,7 +36,6 @@ public class OrderServiceImpl implements OrderService {
 
         if (event.isApplicable(order)) {
             order = event.applyTo(order);// Изменяем заказ при необходимости (статус)
-
             // Сохраняем изменения в заказе (статус) если оно ещё не зарегистрировано и сохраняем событие.
             orderRepository.save(Objects.requireNonNull(order));
             eventRepository.save(event);
@@ -46,6 +46,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order findOrder(int id) {
-        return orderRepository.getReferenceById(id);
+        return orderRepository.findByIdWithEvents(id)
+                              .orElseThrow(() -> new OrderNotFoundException("Не найдено заказа: "+ id));
     }
 }

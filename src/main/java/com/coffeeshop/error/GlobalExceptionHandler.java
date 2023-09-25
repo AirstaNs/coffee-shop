@@ -38,4 +38,12 @@ public class GlobalExceptionHandler {
         log.error("SerializationException: {}", errorResponse);
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleOrderNotFoundException(OrderNotFoundException ex,
+            HttpServletRequest request) {
+        String path = request.getServletPath();
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND, path, ex.getMessage());
+        log.error("OrderNotFoundException: {}", errorResponse);
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
 }
