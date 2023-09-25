@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
         @JsonSubTypes.Type(value = OrderCompletedEvent.class, name = "COMPLETED"),
         @JsonSubTypes.Type(value = OrderDeliveredEvent.class, name = "DELIVERED")
 })
-public abstract class OrderEvent {
+public abstract class OrderEvent implements OrderEventApplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id")
@@ -50,7 +50,11 @@ public abstract class OrderEvent {
     @JsonIgnore
     private String eventData;
 
-    public abstract void applyTo(Order order);
+
+    @Override
+    public boolean isApplicable(Order order) {
+        return order != null && order.getStatus() != null;
+    }
 
     @PrePersist
     @PreUpdate

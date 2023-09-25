@@ -4,8 +4,9 @@ import com.coffeeshop.model.order.Order;
 
 public class OrderCompletedEvent extends OrderEvent{
     @Override
-    public void applyTo(Order order) {
+    public Order applyTo(Order order) {
         order.setStatus(EventType.COMPLETED);
+        return  order;
     }
 
     @Override

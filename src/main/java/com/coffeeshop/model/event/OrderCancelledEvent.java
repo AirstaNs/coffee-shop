@@ -5,17 +5,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,8 +25,14 @@ public class OrderCancelledEvent extends OrderEvent {
     private String cancelReason;
 
     @Override
-    public void applyTo(Order order) {
+    public boolean isApplicable(Order order) {
+        return super.isApplicable(order) && order.getStatus() != EventType.CANCELLED;
+    }
+
+    @Override
+    public Order applyTo(Order order) {
         order.setStatus(EventType.CANCELLED);
+        return order;
     }
 
     @Override

@@ -36,10 +36,15 @@ public class OrderRegisteredEvent extends OrderEvent {
     private Double productCost;
 
     @Override
-    public void applyTo(Order order) {
-        order.setStatus(EventType.REGISTERED);
+    public boolean isApplicable(Order order) {
+        return order != null && order.getStatus() == null;
     }
 
+    @Override
+    public Order applyTo(Order order) {
+        order.setStatus(EventType.REGISTERED);
+        return order;
+    }
 
     @Override
     public void serializeEventData() {

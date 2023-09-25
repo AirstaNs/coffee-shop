@@ -2,10 +2,16 @@ package com.coffeeshop.model.event;
 
 import com.coffeeshop.model.order.Order;
 
-public class OrderDeliveredEvent extends OrderEvent{
+public class OrderDeliveredEvent extends OrderEvent {
     @Override
-    public void applyTo(Order order) {
+    public boolean isApplicable(Order order) {
+        return super.isApplicable(order) && order.getStatus() != EventType.DELIVERED;
+    }
+
+    @Override
+    public Order applyTo(Order order) {
         order.setStatus(EventType.DELIVERED);
+        return order;
     }
 
     @Override
