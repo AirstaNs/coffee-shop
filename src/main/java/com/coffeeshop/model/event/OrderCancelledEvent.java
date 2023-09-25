@@ -1,11 +1,10 @@
 package com.coffeeshop.model.event;
 
+import com.coffeeshop.config.hibernate.FormatMapperCustom;
 import com.coffeeshop.model.order.Order;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Transient;
@@ -33,9 +32,7 @@ public class OrderCancelledEvent extends OrderEvent {
 
     @Override
     public void serializeEventData() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        ObjectMapper mapper = FormatMapperCustom.getObjectMapper();
         try {
             Map<String, Object> eventDataMap = new HashMap<>();
             eventDataMap.put("cancelReason", this.cancelReason);
@@ -47,9 +44,7 @@ public class OrderCancelledEvent extends OrderEvent {
 
     @Override
     public void deserializeEventData() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        ObjectMapper mapper = FormatMapperCustom.getObjectMapper();
         try {
             Map<String, Object> eventDataMap = mapper.readValue(this.getEventData(), new TypeReference<>() {});
             this.cancelReason = (String) eventDataMap.get("cancelReason");
