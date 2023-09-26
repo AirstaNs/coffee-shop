@@ -3,6 +3,8 @@ package com.coffeeshop.model.event;
 import com.coffeeshop.model.order.Order;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -44,6 +46,9 @@ public abstract class OrderEvent implements OrderEventApplier {
     @JsonBackReference
     private Order order;
 
+    @Column(name = "employee_id", nullable = false)
+    @NotNull
+    @Positive
     protected Long employeeId;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -51,7 +56,7 @@ public abstract class OrderEvent implements OrderEventApplier {
     private LocalDateTime creationDate = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 
     @JsonProperty("event_type")
-    @Column(name = "event_type", insertable = false, updatable = false)
+    @Column(name = "event_type", insertable = false, updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
     private EventType eventType;
 

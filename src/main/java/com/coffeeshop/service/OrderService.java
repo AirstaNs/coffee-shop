@@ -1,8 +1,11 @@
 package com.coffeeshop.service;
 
 
-import com.coffeeshop.model.order.Order;
 import com.coffeeshop.model.event.OrderEvent;
+import com.coffeeshop.model.order.Order;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * Интерфейс {@code OrderService} предоставляет контракт для обработки заказов и связанных с ними событий.
@@ -23,6 +26,7 @@ import com.coffeeshop.model.event.OrderEvent;
  * При получении информации о заказе, ожидается возврат агрегированной информации на основе всех связанных событий.
  * В частности, в модели должен быть отражен текущий статус (этап) заказа и присутствовать список событий с информацией о типе событий и времени его создания.
  */
+@Validated
 public interface OrderService {
     /**
      * Публикует событие, связанное с заказом. Перед публикацией проверяет, может ли событие быть применено к заказу.
@@ -30,12 +34,12 @@ public interface OrderService {
      * @param event событие, связанное с заказом.
      */
 
-    void publishEvent(OrderEvent event);
+    void publishEvent(@Valid OrderEvent event);
 
     /**
      * Возвращает заказ по его идентификатору вместе со всеми связанными событиями.
      * @param id идентификатор заказа.
      * @return заказ с агрегированной информацией о связанных событиях.
      */
-    Order findOrder(int id);
+    Order findOrder(@Positive int id);
 }

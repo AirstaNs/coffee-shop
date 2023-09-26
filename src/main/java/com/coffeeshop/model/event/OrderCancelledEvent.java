@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,6 +27,7 @@ public class OrderCancelledEvent extends OrderEvent {
     /**
      * этот аргумент хранится в json в поле {@link OrderEvent#getEventData()}
      */
+    @NotBlank(message = "причина отмены заказа не может быть пустым")
     @Transient
     private String cancelReason;
 

@@ -8,6 +8,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -28,14 +30,25 @@ import java.util.Map;
 @DiscriminatorValue(EventType.Constants.REGISTERED)
 @Entity
 public class OrderRegisteredEvent extends OrderEvent {
+
     @Transient
+    @NotNull
+    @Positive
     private Integer clientId;
+
     @Transient
+    @NotNull
     @JsonFormat(pattern = "HH:mm")
     private LocalTime expectedPickupTime;
+
     @Transient
+    @NotNull
+    @Positive
     private Integer productId;
+
     @Transient
+    @NotNull
+    @Positive
     private Double productCost;
 
     /**
