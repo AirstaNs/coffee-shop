@@ -33,7 +33,6 @@ public class OrderCancelledEvent extends OrderEvent {
 
     /**
      * Применяет текущее событие к указанному заказу, устанавливая его статус как "CANCELLED".
-     *
      * @param order Заказ, к которому применяется событие.
      * @return Заказ с обновленным статусом.
      */
@@ -58,6 +57,7 @@ public class OrderCancelledEvent extends OrderEvent {
             throw new RuntimeException("Ошибка сериализации данных события", e);
         }
     }
+
     /**
      * Десериализует данные события после загрузки из базы данных.
      */

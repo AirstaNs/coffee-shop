@@ -19,7 +19,6 @@ public class OrderDeliveredEvent extends OrderEvent {
 
     /**
      * Применяет текущее событие к указанному заказу, устанавливая его статус как "DELIVERED".
-     *
      * @param order Заказ, к которому применяется событие.
      * @return Заказ с обновленным статусом.
      */

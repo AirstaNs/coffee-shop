@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository;
  * Этот репозиторий расширяет {@link JpaRepository}, что предоставляет стандартные методы CRUD для сущности {@link OrderEvent}.
  */
 @Repository
-public interface OrderEventRepository extends JpaRepository<OrderEvent, Integer> {
-}
+public interface OrderEventRepository extends JpaRepository<OrderEvent, Integer> {}
 

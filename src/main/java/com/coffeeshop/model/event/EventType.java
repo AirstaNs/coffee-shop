@@ -24,7 +24,6 @@ public enum EventType {
 
     /**
      * Конструктор для инициализации типа события с заданным именем .
-     *
      * @param name Наименование типа события.
      */
     EventType(String name) {

@@ -18,7 +18,6 @@ import lombok.EqualsAndHashCode;
 public class OrderCompletedEvent extends OrderEvent {
     /**
      * Применяет текущее событие к указанному заказу, устанавливая его статус как "COMPLETED".
-     *
      * @param order Заказ, к которому применяется событие.
      * @return Заказ с обновленным статусом.
      */

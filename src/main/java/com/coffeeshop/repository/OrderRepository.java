@@ -22,7 +22,6 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Integer> {
     /**
      * Загружает заказ по его идентификатору вместе со всеми связанными событиями.
-     *
      * @param id идентификатор заказа.
      * @return {@link Optional} содержащий заказ или пустой, если заказ не найден.
      */
