@@ -146,7 +146,6 @@ fabric.properties
 ### Intellij+all Patch ###
 
 .idea/*
-.idea/*
 *.iml
 modules.xml
 .idea/misc.xml

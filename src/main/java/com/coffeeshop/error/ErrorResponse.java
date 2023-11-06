@@ -16,5 +16,4 @@ public record ErrorResponse(
         HttpStatus status,
         @Schema(description = "Путь запроса, при выполнении которого произошла ошибка.")
         String path,
-        @Schema(description = "Сообщение об ошибке.")
-        String message) {}
+        @Schema(description = "Сообщение об ошибке.") String message) {}

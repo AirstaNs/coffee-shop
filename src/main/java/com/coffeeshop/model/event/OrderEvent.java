@@ -67,7 +67,7 @@ public abstract class OrderEvent implements OrderEventApplier {
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "data")
     @JsonIgnore
-    private String eventData;
+    private String eventData; // TODO JsonNode  type
 
 
     /**

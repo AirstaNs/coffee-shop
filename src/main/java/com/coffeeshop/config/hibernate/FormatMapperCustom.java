@@ -22,8 +22,8 @@ import java.time.format.DateTimeFormatter;
  * </p>
  */
 public class FormatMapperCustom implements FormatMapper {
-    private final FormatMapper delegate;
     private static final ObjectMapper customObjectMapper = createObjectMapper();
+    private final FormatMapper delegate;
 
     /**
      * Конструктор для создания нового экземпляра кастомного маппера.
@@ -48,7 +48,6 @@ public class FormatMapperCustom implements FormatMapper {
      * Этот метод настраивает сериализацию объектов типа {@link LocalTime} с использованием формата "HH:mm" и
      * объектов типа {@link LocalDateTime} с использованием стандартного формата ISO_LOCAL_DATE_TIME.
      * </p>
-     *
      * @return Настроенный экземпляр {@link ObjectMapper}.
      */
     private static ObjectMapper createObjectMapper() {

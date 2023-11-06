@@ -5,11 +5,7 @@ import com.coffeeshop.model.order.Order;
 import com.coffeeshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -30,7 +26,6 @@ public class OrderController {
 
     /**
      * Конструктор для инъекции зависимости OrderService.
-     *
      * @param orderService Сервис для управления заказами.
      */
     @Autowired
@@ -45,7 +40,6 @@ public class OrderController {
      * - Любому из событий должно предшествовать событие регистрации заказа.
      * - Если заказ уже выдан или отменен, публикация новых событий недоступна.
      * </p>
-     *
      * @param event деморализуется в свой подкласс.
      * @return ResponseEntity с HTTP-статусом - OK или перехват исключений в @ControllerAdvice.
      */
@@ -62,7 +56,6 @@ public class OrderController {
      * Возвращает полную информацию о заказе на основе агрегации имеющихся событий.
      * В модели отражен текущий статус заказа и список событий с информацией о типе события и времени его создания.
      * </p>
-     *
      * @param orderId Идентификатор заказа.
      * @return ResponseEntity с информацией о заказе или HTTP-статусом 404 "не найдено".
      */

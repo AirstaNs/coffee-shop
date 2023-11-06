@@ -9,7 +9,6 @@ package com.coffeeshop.error;
 public class OrderNotFoundException extends RuntimeException {
     /**
      * Конструктор для создания нового экземпляра исключения с указанным сообщением.
-     *
      * @param message Сообщение об ошибке.
      */
     public OrderNotFoundException(String message) {
