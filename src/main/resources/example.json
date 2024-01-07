@@ -1,0 +1,31 @@
+[
+  {
+    "event_type": "REGISTERED",
+    "client_id": 123,
+    "employee_id": 456,
+    "expected_pickup_time": "12:30",
+    "product_id": 789,
+    "product_cost": 99.99
+  },
+  {
+    "event_type": "STARTED",
+    "employee_id": 456,
+    "order_id": 1
+  },
+  {
+    "event_type": "COMPLETED",
+    "employee_id": 456,
+    "order_id": 1
+  },
+  {
+    "event_type": "DELIVERED",
+    "employee_id": 456,
+    "order_id": 1
+  },
+  {
+    "event_type": "CANCELLED",
+    "order_id": 1,
+    "employee_id": 456,
+    "cancel_reason": "кофе закончился"
+  }
+]
