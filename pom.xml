@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.2</version>
+        <version>3.3.3</version>
         <relativePath/>
     </parent>
     <groupId>com.coffee-shop</groupId>
@@ -17,9 +17,9 @@
         <jdk.version>21</jdk.version>
         <encoding.version>UTF-8</encoding.version>
         <!-- version -->
-        <itextpdf.version>8.0.4</itextpdf.version>
+        <itextpdf.version>8.0.5</itextpdf.version>
         <lombok.version>1.18.34</lombok.version>
-        <mapstruct.version>1.6.0.Beta2</mapstruct.version>
+        <mapstruct.version>1.6.0</mapstruct.version>
         <lombok-mapstruct.version>0.2.0</lombok-mapstruct.version>
         <!-- version -->
         <java.version>${jdk.version}</java.version>
@@ -56,7 +56,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.3</version>
+            <version>42.7.4</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
